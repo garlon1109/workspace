@@ -1,0 +1,12 @@
+[workspace]
+members = ["client", "server", "cli"]
+
+[workspace.dependencies]
+log = "0.4"
+env_logger = "0.9"
+
+[profile.release]
+panic = "abort"
+
+[profile.dev]
+panic = "abort"

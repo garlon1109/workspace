@@ -1,0 +1,6 @@
+data
+model
+logs
+dumps
+__pycache__
+*.log

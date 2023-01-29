@@ -1,0 +1,58 @@
+#ifndef _ITHREAD_H_
+#define _ITHREAD_H_
+
+#ifdef __windows__
+#include <Windows.h>
+#elif __linux__
+#include <pthread.h>
+#endif
+
+typedef enum
+{
+  THREAD_NONE = 0,
+  THREAD_RUNNING,
+  THREAD_FINISHED
+}ThreadState;
+
+typedef enum
+{
+  PRIORITY_INHERIT,
+  PRIORITY_LOWEST,
+  PRIORITY_LOW,
+  PRIORITY_NORMAL,
+  PRIORITY_HIGH,
+  PRIORITY_HIGHEST
+}ThreadPriority;
+
+class IThread {
+ private:
+#ifdef __windows__
+  HANDLE m_thread;
+#elif __linux__
+  pthread_t thread_;
+#endif
+  ThreadState m_state;
+
+ protected:
+  bool exit_flag_;
+
+ public:
+  IThread();
+  virtual ~IThread();
+
+  virtual void start();
+  virtual void stop();
+  virtual void resume();
+  virtual void join();
+
+#ifdef __windows__
+  static DWORD WINAPI ThreadHandler(LPVOID lpParamter);
+#elif __linux__
+  static void* ThreadHandler(void* arg);
+#endif
+
+  virtual void execute() = 0;
+};
+
+#endif
+
